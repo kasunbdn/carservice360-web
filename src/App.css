@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.ant-layout {
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.ant-layout-sider {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.ant-layout-content {
+  transition: all 0.3s ease;
+}
+
+.ant-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.ant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ant-table-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-table-cell {
+  transition: background 0.3s ease;
+}
+
+.chart-container {
+  height: 300px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .ant-layout-content {
+    margin: 16px 8px !important;
+    padding: 16px !important;
+  }
+
+  .invoice-card {
+    padding: 20px;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
