@@ -13,23 +13,103 @@ body {
   transition: all 0.3s ease;
 }
 
-.ant-layout-sider {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+.site-layout {
+  min-height: 100vh;
   transition: all 0.3s ease;
 }
 
-.ant-layout-content {
+@media (min-width: 992px) {
+  .site-layout {
+    margin-left: 260px;
+  }
+}
+
+.site-content {
+  position: relative;
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+}
+
+.content-wrapper {
+  max-width: 1600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+@media (max-width: 991px) {
+  .site-layout {
+    margin-left: 0;
+  }
+
+  .site-content {
+    padding: 16px;
+  }
+
+  .content-wrapper {
+    padding: 16px;
+  }
+}
+
+.ant-layout-sider {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.ant-layout-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  padding: 0 24px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 992px) {
+  .ant-layout-header {
+    left: 260px;
+    width: calc(100% - 260px);
+  }
 }
 
 .ant-card {
   border-radius: 12px;
   transition: all 0.3s ease;
+  height: 100%;
 }
 
 .ant-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ant-menu-item {
+  border-radius: 6px;
+  margin: 4px 8px !important;
+}
+
+.ant-menu-item-selected {
+  background-color: #6366f1 !important;
+  color: white !important;
+}
+
+.ant-menu-item:hover {
+  color: #6366f1 !important;
+}
+
+.ant-menu-item-selected:hover {
+  color: white !important;
+}
+
+.ant-menu-inline .ant-menu-item::after {
+  display: none;
 }
 
 .ant-table-wrapper {
@@ -39,22 +119,61 @@ body {
 
 .ant-table-cell {
   transition: background 0.3s ease;
+  padding: 16px !important;
 }
 
-.chart-container {
-  height: 300px;
-  transition: all 0.3s ease;
+.ant-form-item {
+  margin-bottom: 20px;
 }
 
-@media (max-width: 768px) {
-  .ant-layout-content {
-    margin: 16px 8px !important;
-    padding: 16px !important;
-  }
+.ant-input,
+.ant-select-selector,
+.ant-input-number,
+.ant-picker {
+  border-radius: 8px !important;
+}
 
-  .invoice-card {
-    padding: 20px;
-  }
+.ant-btn {
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ant-btn-primary {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+.ant-btn-primary:hover {
+  background: #818cf8;
+  border-color: #818cf8;
+}
+
+.ant-row {
+  margin-right: -8px !important;
+  margin-left: -8px !important;
+}
+
+.ant-col {
+  padding-right: 8px !important;
+  padding-left: 8px !important;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  color: white;
+}
+
+.stats-card .ant-card-body {
+  padding: 20px;
+}
+
+.stats-card .ant-statistic-content {
+  color: white;
 }
 
 .fade-in {

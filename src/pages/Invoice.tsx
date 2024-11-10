@@ -1,3 +1,3 @@
-export default function Customers() {
-  return <div>Customers</div>;
+export default function Invoice() {
+  return <div>Invoice</div>;
 }
