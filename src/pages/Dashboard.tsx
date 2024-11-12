@@ -172,7 +172,7 @@ function Dashboard() {
           <Row gutter={[16, 16]}>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Total Revenue"
+                title="StatsCard 1"
                 value="$11,441"
                 icon={
                   <DollarOutlined
@@ -184,7 +184,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Total Jobs"
+                title="StatsCard 2"
                 value="210"
                 icon={
                   <CarOutlined style={{ fontSize: "24px", color: "#6366f1" }} />
@@ -194,7 +194,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Active Customers"
+                title="StatsCard 3"
                 value="63"
                 icon={
                   <UserOutlined
@@ -206,7 +206,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Pending Invoices"
+                title="StatsCard 4"
                 value="62"
                 icon={
                   <FileOutlined
@@ -218,7 +218,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Pending Invoices"
+                title="StatsCard 5"
                 value="12"
                 icon={
                   <FileOutlined
@@ -230,7 +230,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Pending Invoices"
+                title="StatsCard 6"
                 value="12"
                 icon={
                   <FileOutlined
@@ -242,7 +242,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Pending Invoices"
+                title="StatsCard 7"
                 value="12"
                 icon={
                   <FileOutlined
@@ -254,7 +254,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Pending Invoices"
+                title="StatsCard 8"
                 value="12"
                 icon={
                   <FileOutlined
@@ -290,7 +290,7 @@ function Dashboard() {
           <Row gutter={[16, 16]}>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Revenue Goal"
+                title="StatsCard 9"
                 value="$20,000"
                 icon={
                   <DollarOutlined
@@ -302,7 +302,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Completed Jobs"
+                title="StatsCard 10"
                 value="150"
                 icon={
                   <CarOutlined style={{ fontSize: "24px", color: "#6366f1" }} />
@@ -312,7 +312,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="New Customers"
+                title="StatsCard 11"
                 value="40"
                 icon={
                   <UserOutlined
@@ -324,7 +324,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="New Customers"
+                title="StatsCard 12"
                 value="40"
                 icon={
                   <UserOutlined
@@ -336,7 +336,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="New Customers"
+                title="StatsCard 13"
                 value="40"
                 icon={
                   <UserOutlined
@@ -348,7 +348,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} lg={12}>
               <StatsCard
-                title="Overdue Invoices"
+                title="StatsCard 14"
                 value="5"
                 icon={
                   <FileOutlined
