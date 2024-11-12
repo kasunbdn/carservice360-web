@@ -124,9 +124,7 @@ function Invoice() {
                 <Form.Item label="Invoice No">
                   <Input
                     disabled
-                    value={`INV-${dayjs().format("YYYYMMDD")}-${Math.floor(
-                      Math.random() * 1000
-                    )}`}
+                    value={`INV-${dayjs().format("YYYYMMDD")}-0001`}
                   />
                 </Form.Item>
                 <Form.Item label="Service Adviser" required>
