@@ -39,7 +39,7 @@ export default function ServiceSelect({
   ) : (
     <Select
       style={{ width: "100%" }}
-      value={value || undefined}
+      value={value === "" ? undefined : value ?? undefined}
       onChange={handleChange}
       allowClear
       showSearch
