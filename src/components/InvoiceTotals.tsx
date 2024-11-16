@@ -3,11 +3,11 @@ import { Typography, Divider } from "antd";
 const { Text, Title } = Typography;
 
 interface InvoiceTotalsProps {
-  subtotal: number;
-  discountTotal: number;
-  taxRate?: number;
-  taxAmount?: number;
-  grandTotal: number;
+  readonly subtotal: number;
+  readonly discountTotal: number;
+  readonly taxRate?: number;
+  readonly taxAmount?: number;
+  readonly grandTotal: number;
 }
 
 export default function InvoiceTotals({

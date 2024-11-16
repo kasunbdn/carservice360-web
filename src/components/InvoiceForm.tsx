@@ -37,6 +37,12 @@ interface ServiceItem {
   amount: number;
 }
 
+const AddServiceButton = ({ onClick }: { onClick: () => void }) => (
+  <Button type="dashed" block icon={<PlusOutlined />} onClick={onClick}>
+    Add Service
+  </Button>
+);
+
 export default function InvoiceForm() {
   const [items, setItems] = useState<ServiceItem[]>([]);
   const [taxRate] = useState(0);
@@ -293,16 +299,7 @@ export default function InvoiceForm() {
           columns={columns}
           dataSource={items}
           pagination={false}
-          footer={() => (
-            <Button
-              type="dashed"
-              block
-              icon={<PlusOutlined />}
-              onClick={handleAddItem}
-            >
-              Add Service
-            </Button>
-          )}
+          footer={() => <AddServiceButton onClick={handleAddItem} />}
         />
 
         <InvoiceTotals
