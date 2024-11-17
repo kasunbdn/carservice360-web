@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 // import Jobs from "./pages/Jobs";
 // import Customers from "./pages/Customers";
-// import Invoice from "./pages/Invoice";
+import Invoice from "./pages/Invoice";
 import "./App.css";
 
 const { Content } = Layout;
@@ -13,18 +13,21 @@ const { Content } = Layout;
 export default function App() {
   return (
     <Router>
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout hasSider>
         <Sidebar />
-        <Layout>
+        <Layout className="site-layout">
           <Header />
-          <Content style={{ margin: "24px 16px", padding: 24, minHeight: 280 }}>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              {/* 
+          <Content className="site-content">
+            <div className="content-wrapper">
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/invoice" element={<Invoice />} />
+                {/* 
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/customers" element={<Customers />} />
-              <Route path="/invoice" element={<Invoice />} /> */}
-            </Routes>
+               */}
+              </Routes>
+            </div>
           </Content>
         </Layout>
       </Layout>
