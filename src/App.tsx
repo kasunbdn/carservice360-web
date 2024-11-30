@@ -3,7 +3,7 @@ import { Layout } from "antd";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-// import Jobs from "./pages/Jobs";
+import Jobs from "./pages/JobManagement";
 // import Customers from "./pages/Customers";
 import Invoice from "./pages/Invoice";
 import "./App.css";
@@ -22,8 +22,8 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/invoice" element={<Invoice />} />
+                <Route path="/jobmanagement" element={<Jobs />} />
                 {/* 
-              <Route path="/jobs" element={<Jobs />} />
               <Route path="/customers" element={<Customers />} />
                */}
               </Routes>

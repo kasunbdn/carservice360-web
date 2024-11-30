@@ -1,4 +1,11 @@
-import { Dayjs } from "dayjs";
+export interface ServiceItem {
+  id: string;
+  name: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+}
 
 export interface Job {
   id: string;
@@ -14,24 +21,22 @@ export interface Job {
     vin: string;
     licensePlate: string;
   };
-  serviceType: string;
+  service: {
+    type: string;
+    items: ServiceItem[];
+    estimatedCost: number;
+  };
   status: "pending" | "in_progress" | "completed" | "cancelled";
   priority: "low" | "medium" | "high";
   technician: string;
-  startDate: string;
-  estimatedCompletion: string;
-  progress: number;
-  estimatedCost: number;
-  description: string;
-  notes: string;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface JobFilters {
-  searchText: string;
-  status: string | null;
-  priority: string | null;
-  technician: string | null;
-  dateRange: [Dayjs | null, Dayjs | null] | null;
+  startDate: string;
+  estimatedCompletion: string;
+  notes: string;
+  history: {
+    timestamp: string;
+    action: string;
+    user: string;
+  }[];
 }
