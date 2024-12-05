@@ -21,7 +21,7 @@ import {
   jobTypes,
   branches,
   serviceAdvisers,
-} from "../mock data/serviceData";
+} from "../data/serviceData";
 
 const { Text } = Typography;
 

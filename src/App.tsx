@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Jobs from "./pages/JobManagement";
 // import Customers from "./pages/Customers";
 import Invoice from "./pages/Invoice";
+import Inventory from "./pages/Inventory";
 import "./App.css";
 
 const { Content } = Layout;
@@ -23,6 +24,7 @@ export default function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/invoice" element={<Invoice />} />
                 <Route path="/jobmanagement" element={<Jobs />} />
+                <Route path="/Inventory" element={<Inventory />} />
                 {/* 
               <Route path="/customers" element={<Customers />} />
                */}

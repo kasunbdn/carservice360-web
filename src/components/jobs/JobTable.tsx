@@ -1,19 +1,25 @@
-import { Table, Tag, Space, Button, Tooltip } from "antd";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Table, Tag, Space, Button, Tooltip, Select, Typography } from "antd";
+import { EditOutlined, EyeOutlined, HistoryOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import type { Job } from "../../types/job";
 import dayjs from "dayjs";
+
+const { Text } = Typography;
 
 interface JobTableProps {
   jobs: Job[];
   onViewJob: (job: Job) => void;
   onEditJob: (job: Job) => void;
+  onStatusChange: (jobId: string, status: Job["status"]) => void;
+  onViewHistory: (job: Job) => void;
 }
 
 export default function JobTable({
   jobs,
   onViewJob,
   onEditJob,
+  onStatusChange,
+  onViewHistory,
 }: JobTableProps) {
   const getStatusColor = (status: Job["status"]) => {
     const colors = {
@@ -58,17 +64,38 @@ export default function JobTable({
     },
     {
       title: "Service",
-      dataIndex: ["service", "type"],
-      key: "serviceType",
+      key: "service",
+      render: (_, record) => (
+        <Space direction="vertical" size="small">
+          <Text>
+            {record.service.type.charAt(0).toUpperCase() +
+              record.service.type.slice(1)}
+          </Text>
+          {record.service.items.map((item) => (
+            <Text key={item.id} type="secondary" style={{ fontSize: "12px" }}>
+              {item.name}
+            </Text>
+          ))}
+        </Space>
+      ),
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status: Job["status"]) => (
-        <Tag color={getStatusColor(status)}>
-          {status.replace("_", " ").toUpperCase()}
-        </Tag>
+      render: (status: Job["status"], record) => (
+        <Select
+          value={status}
+          style={{ width: 120 }}
+          onChange={(value) =>
+            onStatusChange(record.id, value as Job["status"])
+          }
+        >
+          <Select.Option value="pending">Pending</Select.Option>
+          <Select.Option value="in_progress">In Progress</Select.Option>
+          <Select.Option value="completed">Completed</Select.Option>
+          <Select.Option value="cancelled">Cancelled</Select.Option>
+        </Select>
       ),
     },
     {
@@ -80,9 +107,11 @@ export default function JobTable({
       ),
     },
     {
-      title: "Technician",
-      dataIndex: "technician",
-      key: "technician",
+      title: "Est. Cost",
+      dataIndex: ["service", "estimatedCost"],
+      key: "estimatedCost",
+      render: (cost: number) => `$${cost.toFixed(2)}`,
+      sorter: (a, b) => a.service.estimatedCost - b.service.estimatedCost,
     },
     {
       title: "Created",
@@ -108,6 +137,13 @@ export default function JobTable({
               type="text"
               icon={<EditOutlined />}
               onClick={() => onEditJob(record)}
+            />
+          </Tooltip>
+          <Tooltip title="View History">
+            <Button
+              type="text"
+              icon={<HistoryOutlined />}
+              onClick={() => onViewHistory(record)}
             />
           </Tooltip>
         </Space>
