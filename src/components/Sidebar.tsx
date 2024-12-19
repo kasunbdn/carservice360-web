@@ -36,9 +36,9 @@ const menuItems: MenuProps["items"] = [
     label: "OPERATIONS",
     children: [
       {
-        key: "/jobs",
+        key: "/jobmanagement",
         icon: <CarOutlined />,
-        label: "Jobs",
+        label: "Job Management",
       },
       {
         key: "/schedule",
