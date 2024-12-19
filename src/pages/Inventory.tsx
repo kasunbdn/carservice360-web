@@ -150,7 +150,7 @@ export default function Inventory() {
     {
       title: "Quantity",
       key: "quantity",
-      render: (_, record: InventoryItem) => (
+      render: (_: any, record: InventoryItem) => (
         <Space>
           {formatQuantity(record.quantity, record.unit)}
           {record.quantity <= record.minQuantity && (

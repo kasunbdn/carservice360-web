@@ -12,7 +12,7 @@ const initialItems: InventoryItem[] = [
     id: "1",
     partNumber: "OIL-001",
     name: "Synthetic Oil Filter",
-    category: "parts", // change 'engine' to 'parts'
+    category: "parts",
     quantity: 50,
     minQuantity: 20,
     price: 12.99,

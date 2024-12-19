@@ -22,7 +22,7 @@ export default function Header() {
     <AntHeader
       style={{
         padding: "0 24px",
-        background: "transparent",
+        background: "#fff",
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-end",
