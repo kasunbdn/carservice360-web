@@ -3,7 +3,6 @@ import {
   Collapse,
   Typography,
   Card,
-  Table,
   Space,
   Button,
   Modal,
@@ -11,159 +10,48 @@ import {
   DatePicker,
   Select,
 } from "antd";
-import InvoiceForm from "../components/InvoiceForm";
 import {
   PrinterOutlined,
   DownloadOutlined,
   SearchOutlined,
   FilterOutlined,
 } from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
+import InvoiceForm from "../components/invoice/InvoiceForm.tsx";
+import InvoicePreview from "../components/invoice/InvoicePreview.tsx";
+import InvoiceTable from "../components/invoice/InvoiceTable.tsx";
+import type { Invoice } from "../types/invoice";
+import { mockInvoices } from "../data/mockData.ts";
 import dayjs from "dayjs";
-import InvoicePreview from "../components/InvoicePreview";
-import { generatePDF } from "../utils/pdfGenerator";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
-interface InvoiceRecord {
-  id: string;
-  date: string;
-  customer: string;
-  amount: number;
-  status: string;
-  items: any[];
-}
-
-const mockInvoices: InvoiceRecord[] = [
-  {
-    id: "INV-20240215-001",
-    date: "2024-02-15",
-    customer: "Miko",
-    amount: 299.99,
-    status: "Paid",
-    items: [
-      { service: "Oil Change", qty: 1, price: 49.99 },
-      { service: "Brake Service", qty: 1, price: 250.0 },
-    ],
-  },
-  {
-    id: "INV-20240214-002",
-    date: "2024-02-14",
-    customer: "Arlecchino",
-    amount: 159.99,
-    status: "Pending",
-    items: [{ service: "Tire Rotation", qty: 4, price: 159.99 }],
-  },
-];
-
-function Invoice() {
-  const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(
-    null
-  );
+export default function InvoicePage() {
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
-  // const [filters, setFilters] = useState({
-  //   dateRange: null,
-  //   status: "",
-  //   search: "",
-  // });
-  const [filters, setFilters] = useState<{
-    dateRange: dayjs.Dayjs[] | null;
-    status: string;
-    search: string;
-  }>({
-    dateRange: null,
+  const [filters, setFilters] = useState({
+    dateRange: null as [dayjs.Dayjs, dayjs.Dayjs] | null,
     status: "",
     search: "",
   });
 
-  const columns: ColumnsType<InvoiceRecord> = [
-    {
-      title: "Invoice #",
-      dataIndex: "id",
-      key: "id",
-      sorter: (a, b) => a.id.localeCompare(b.id),
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
-      render: (date) => dayjs(date).format("YYYY-MM-DD"),
-    },
-    {
-      title: "Customer",
-      dataIndex: "customer",
-      key: "customer",
-      sorter: (a, b) => a.customer.localeCompare(b.customer),
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-      key: "amount",
-      sorter: (a, b) => a.amount - b.amount,
-      render: (amount) => `$${amount.toFixed(2)}`,
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      filters: [
-        { text: "Paid", value: "Paid" },
-        { text: "Pending", value: "Pending" },
-      ],
-      onFilter: (value, record) => record.status === value,
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (_, record) => (
-        <Space>
-          <Button
-            type="link"
-            onClick={() => {
-              setSelectedInvoice(record);
-              setPreviewVisible(true);
-            }}
-          >
-            View
-          </Button>
-          <Button
-            type="link"
-            icon={<PrinterOutlined />}
-            onClick={() => handlePrint(record)}
-          >
-            Print
-          </Button>
-          <Button
-            type="link"
-            icon={<DownloadOutlined />}
-            onClick={() => handleDownload(record)}
-          >
-            PDF
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  const handlePrint = async (_invoice: InvoiceRecord) => {
-    const element = document.getElementById("invoice-preview");
-    if (element) {
-      window.print();
-    }
+  const handlePrint = async () => {
+    window.print();
   };
 
-  const handleDownload = async (invoice: InvoiceRecord) => {
-    await generatePDF(invoice);
+  const handleDownload = async () => {
+    // Implement PDF download logic
+    console.log("Downloading PDF...");
   };
 
-  const filterInvoices = (invoices: InvoiceRecord[]) => {
+  const filterInvoices = (invoices: Invoice[]) => {
     return invoices.filter((invoice) => {
       const matchesSearch =
-        invoice.customer.toLowerCase().includes(filters.search.toLowerCase()) ||
+        invoice.customer.name
+          .toLowerCase()
+          .includes(filters.search.toLowerCase()) ||
         invoice.id.toLowerCase().includes(filters.search.toLowerCase());
       const matchesStatus =
         !filters.status || invoice.status === filters.status;
@@ -175,14 +63,17 @@ function Invoice() {
       return matchesSearch && matchesStatus && matchesDate;
     });
   };
+
   return (
     <div>
       <Title level={2}>Invoices</Title>
+
       <Collapse style={{ marginBottom: 24 }}>
         <Panel header="Create New Invoice" key="1">
           <InvoiceForm />
         </Panel>
       </Collapse>
+
       <Card title="Invoice History">
         <Space style={{ marginBottom: 16 }} wrap>
           <Input
@@ -191,28 +82,23 @@ function Invoice() {
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
             style={{ width: 200 }}
           />
-          {/* <RangePicker
-            onChange={(dates) => setFilters({ ...filters, dateRange: dates })}
-          /> */}
           <RangePicker
             onChange={(dates) =>
               setFilters({
                 ...filters,
-                dateRange:
-                  dates?.filter((date): date is dayjs.Dayjs => date !== null) ||
-                  null,
+                dateRange: dates as [dayjs.Dayjs, dayjs.Dayjs] | null,
               })
             }
           />
-
           <Select
             placeholder="Status"
             style={{ width: 120 }}
             allowClear
             onChange={(value) => setFilters({ ...filters, status: value })}
           >
-            <Select.Option value="Paid">Paid</Select.Option>
-            <Select.Option value="Pending">Pending</Select.Option>
+            <Select.Option value="paid">Paid</Select.Option>
+            <Select.Option value="pending">Pending</Select.Option>
+            <Select.Option value="void">Void</Select.Option>
           </Select>
           <Button
             icon={<FilterOutlined />}
@@ -222,14 +108,11 @@ function Invoice() {
           </Button>
         </Space>
 
-        <Table
-          columns={columns}
-          dataSource={filterInvoices(mockInvoices)}
-          rowKey="id"
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showTotal: (total) => `Total ${total} invoices`,
+        <InvoiceTable
+          invoices={filterInvoices(mockInvoices)}
+          onView={(invoice) => {
+            setSelectedInvoice(invoice);
+            setPreviewVisible(true);
           }}
         />
       </Card>
@@ -247,7 +130,7 @@ function Invoice() {
             key="print"
             type="primary"
             icon={<PrinterOutlined />}
-            onClick={() => handlePrint(selectedInvoice!)}
+            onClick={handlePrint}
           >
             Print
           </Button>,
@@ -255,7 +138,7 @@ function Invoice() {
             key="download"
             type="primary"
             icon={<DownloadOutlined />}
-            onClick={() => handleDownload(selectedInvoice!)}
+            onClick={handleDownload}
           >
             Download PDF
           </Button>,
@@ -266,4 +149,3 @@ function Invoice() {
     </div>
   );
 }
-export default Invoice;
