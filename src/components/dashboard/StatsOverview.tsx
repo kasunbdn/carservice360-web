@@ -5,7 +5,7 @@ import {
   UserOutlined,
   FileOutlined,
 } from "@ant-design/icons";
-import StatsCard from "../StatsCard";
+import StatsCard from "./StatsCard";
 import type { DashboardStats } from "../../types/dashboard";
 
 interface StatsOverviewProps {

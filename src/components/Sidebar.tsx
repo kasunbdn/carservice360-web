@@ -40,16 +40,6 @@ const menuItems: MenuProps["items"] = [
         icon: <CarOutlined />,
         label: "Job Management",
       },
-      {
-        key: "/schedule",
-        icon: <ScheduleOutlined />,
-        label: "Schedule",
-      },
-      {
-        key: "/services",
-        icon: <ToolOutlined />,
-        label: "Services",
-      },
     ],
   },
   {
@@ -62,11 +52,6 @@ const menuItems: MenuProps["items"] = [
         icon: <FileTextOutlined />,
         label: "Invoices",
       },
-      {
-        key: "/expenses",
-        icon: <TagOutlined />,
-        label: "Expenses",
-      },
     ],
   },
   {
@@ -78,11 +63,6 @@ const menuItems: MenuProps["items"] = [
         key: "/customers",
         icon: <UserOutlined />,
         label: "Customers",
-      },
-      {
-        key: "/staff",
-        icon: <TeamOutlined />,
-        label: "Staff",
       },
     ],
   },

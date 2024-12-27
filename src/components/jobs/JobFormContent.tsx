@@ -19,15 +19,12 @@ import type { Dayjs } from "dayjs";
 const { TextArea } = Input;
 const { Option } = Select;
 
-interface JobFormProps {
+interface JobFormContentProps {
   initialValues?: Job;
-  onSubmit: (
-    values: Omit<Job, "id" | "createdAt" | "updatedAt" | "history">
-  ) => void;
+  onSubmit: (values: any) => void;
   onCancel: () => void;
-  onClear: () => void;
-  loading?: boolean;
   technicians: Array<{ id: string; name: string }>;
+  submitButtonText: string;
 }
 
 const defaultValues = {
@@ -56,14 +53,13 @@ const defaultValues = {
   notes: "",
 };
 
-export default function JobForm({
+export default function JobFormContent({
   initialValues,
   onSubmit,
   onCancel,
-  onClear,
-  loading = false,
   technicians,
-}: JobFormProps) {
+  submitButtonText,
+}: JobFormContentProps) {
   const [form] = Form.useForm();
   const [serviceItems, setServiceItems] = useState<ServiceItem[]>(
     initialValues?.service.items || []
@@ -81,6 +77,7 @@ export default function JobForm({
   }, [initialValues, form]);
 
   const handleSubmit = (values: any) => {
+    console.log("Form values before submit:", values);
     const formattedValues = {
       ...values,
       service: {
@@ -95,12 +92,15 @@ export default function JobForm({
   };
 
   const handleClear = () => {
+    console.log("Clearing form");
+
     form.resetFields();
+
     setServiceItems([]);
-    onClear();
   };
 
   const handleServiceItemsChange = (items: ServiceItem[]) => {
+    console.log("Service items changed:", items);
     setServiceItems(items);
     form.setFieldValue(
       ["service", "estimatedCost"],
@@ -172,6 +172,7 @@ export default function JobForm({
         </Col>
       </Row>
 
+      {/* Vehicle Information Section */}
       <Row gutter={24}>
         <Col span={24}>
           <Divider orientation="left">Vehicle Information</Divider>
@@ -232,6 +233,7 @@ export default function JobForm({
         </Col>
       </Row>
 
+      {/* Service Details Section */}
       <Row gutter={24}>
         <Col span={24}>
           <Divider orientation="left">Service Details</Divider>
@@ -292,6 +294,7 @@ export default function JobForm({
         </Col>
       </Row>
 
+      {/* Schedule Section */}
       <Row gutter={24}>
         <Col span={24}>
           <Divider orientation="left">Schedule</Divider>
@@ -342,8 +345,8 @@ export default function JobForm({
 
       <Form.Item>
         <Space>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            {initialValues ? "Update Job" : "Create Job"}
+          <Button type="primary" htmlType="submit">
+            {submitButtonText}
           </Button>
           <Button onClick={handleClear}>Clear Form</Button>
           <Button onClick={onCancel}>Cancel</Button>

@@ -22,7 +22,7 @@ export default function JobStatusOverview({ jobs }: JobStatusOverviewProps) {
       color: "#1890ff",
     },
     {
-      title: "Pending Jobs",
+      title: "Pending Jobss",
       value: jobs.filter((job) => job.status === "pending").length,
       icon: <ClockCircleOutlined style={{ fontSize: 24, color: "#faad14" }} />,
       color: "#faad14",

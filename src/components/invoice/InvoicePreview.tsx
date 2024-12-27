@@ -14,14 +14,14 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
       <div style={{ padding: "24px", background: "#fff" }}>
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <img
-            src="/logo.png"
+            src="https://i.pinimg.com/originals/43/03/9a/43039af5fec84a456e3f2d0e7640329b.gif"
             alt="Company Logo"
             style={{ height: 60, marginBottom: 16 }}
           />
-          <Title level={3}>Auto Service Pro</Title>
-          <Text>123 Service Road, Anytown, USA</Text>
+          <Title level={3}>carservice360 Car Service (Pvt) Ltd</Title>
+          <Text>123 Service Road, Anuradhapura</Text>
           <br />
-          <Text>Tel: (555) 123-4567 | Email: service@autoservicepro.com</Text>
+          <Text>Tel: (000) 123-4567 | Email: vmd@carservice360-web.com</Text>
         </div>
 
         <Divider />
@@ -114,7 +114,11 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
             Generated on {dayjs().format("YYYY-MM-DD HH:mm:ss")}
           </Text>
           <br />
-          <Text strong>Thank you for choosing Auto Service Pro!</Text>
+          <Text strong>Thank you for choosing carservice360 Car Service!</Text>
+          <br />
+          <Text type="secondary">
+            This is a computer-generated invoice. No signature is required.
+          </Text>
         </div>
       </div>
     </div>

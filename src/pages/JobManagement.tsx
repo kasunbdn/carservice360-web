@@ -11,12 +11,13 @@ import {
   Row,
   Col,
 } from "antd";
-import { PlusOutlined, HistoryOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import type { Job } from "../types/job";
 import JobStatusOverview from "../components/jobs/JobStatusOverview";
 import JobFilters from "../components/jobs/JobFilters";
 import JobTable from "../components/jobs/JobTable";
-import JobForm from "../components/jobs/JobForm";
+import CreateJobForm from "../components/jobs/CreateJobForm";
+import EditJobForm from "../components/jobs/EditJobForm";
 import { useJobStore } from "../stores/jobStore";
 import dayjs from "dayjs";
 
@@ -31,7 +32,7 @@ const technicians = [
 
 export default function JobManagement() {
   const { jobs, addJob, updateJob, updateJobStatus } = useJobStore();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -44,32 +45,35 @@ export default function JobManagement() {
   });
 
   const handleCreateJob = (values: any) => {
+    console.log("Creating new job:", values);
+    addJob(values);
+  };
+
+  const handleEditJob = (job: Job) => {
+    console.log("Opening edit form for job:", job.id);
+    setSelectedJob(job);
+    setIsEditModalVisible(true);
+  };
+
+  const handleUpdateJob = (values: any) => {
+    console.log("Updating job:", selectedJob?.id, values);
     if (selectedJob) {
       updateJob(selectedJob.id, values);
-    } else {
-      addJob(values);
+      setIsEditModalVisible(false);
+      setSelectedJob(null);
     }
-    setIsModalVisible(false);
-    setSelectedJob(null);
   };
 
   const handleViewJob = (job: Job) => {
+    console.log("Viewing job details:", job.id);
     setSelectedJob(job);
     setIsPreviewVisible(true);
   };
 
-  const handleEditJob = (job: Job) => {
-    setSelectedJob(job);
-    setIsModalVisible(true);
-  };
-
   const handleViewHistory = (job: Job) => {
+    console.log("Viewing job history:", job.id);
     setSelectedJob(job);
     setIsHistoryVisible(true);
-  };
-
-  const handleClearForm = () => {
-    setSelectedJob(null);
   };
 
   const filteredJobs = jobs.filter((job) => {
@@ -103,6 +107,12 @@ export default function JobManagement() {
 
       <JobStatusOverview jobs={jobs} />
 
+      <CreateJobForm
+        onSubmit={handleCreateJob}
+        onCancel={() => {}}
+        technicians={technicians}
+      />
+
       <Card
         style={{ marginTop: 24 }}
         title={
@@ -129,16 +139,6 @@ export default function JobManagement() {
               }
               technicians={technicians}
             />
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => {
-                setSelectedJob(null);
-                setIsModalVisible(true);
-              }}
-            >
-              Create New Job
-            </Button>
           </div>
         }
       >
@@ -151,27 +151,18 @@ export default function JobManagement() {
         />
       </Card>
 
-      <Modal
-        title={selectedJob ? "Edit Job" : "Create New Job"}
-        open={isModalVisible}
-        onCancel={() => {
-          setIsModalVisible(false);
-          setSelectedJob(null);
-        }}
-        width={1000}
-        footer={null}
-      >
-        <JobForm
-          initialValues={selectedJob || undefined}
-          technicians={technicians}
-          onSubmit={handleCreateJob}
+      {selectedJob && (
+        <EditJobForm
+          job={selectedJob}
+          visible={isEditModalVisible}
+          onSubmit={handleUpdateJob}
           onCancel={() => {
-            setIsModalVisible(false);
+            setIsEditModalVisible(false);
             setSelectedJob(null);
           }}
-          onClear={handleClearForm}
+          technicians={technicians}
         />
-      </Modal>
+      )}
 
       <Modal
         title="Job Details"
@@ -190,7 +181,7 @@ export default function JobManagement() {
             type="primary"
             onClick={() => {
               setIsPreviewVisible(false);
-              setIsModalVisible(true);
+              setIsEditModalVisible(true);
             }}
           >
             Edit Job
@@ -253,7 +244,7 @@ export default function JobManagement() {
                       : "default"
                   }
                 >
-                  {selectedJob.status?.toUpperCase() ?? "UNKNOWN"}
+                  {selectedJob.status.toUpperCase()}
                 </Tag>
               </Descriptions.Item>
               <Descriptions.Item label="Priority">
@@ -266,7 +257,7 @@ export default function JobManagement() {
                       : "default"
                   }
                 >
-                  {selectedJob.priority?.toUpperCase() ?? "UNKNOWN"}
+                  {selectedJob.priority.toUpperCase()}
                 </Tag>
               </Descriptions.Item>
               <Descriptions.Item label="Technician">
@@ -303,6 +294,7 @@ export default function JobManagement() {
           </Space>
         )}
       </Modal>
+
       <Modal
         title="Job History"
         open={isHistoryVisible}
@@ -310,29 +302,18 @@ export default function JobManagement() {
           setIsHistoryVisible(false);
           setSelectedJob(null);
         }}
-        footer={[
-          <Button key="close" onClick={() => setIsHistoryVisible(false)}>
-            Close
-          </Button>,
-        ]}
+        width={800}
+        footer={null}
       >
-        {selectedJob && (
-          <Timeline
-            items={selectedJob.history.map((event) => ({
-              children: (
-                <div>
-                  <Text strong>{event.action}</Text>
-                  <br />
-                  <Text type="secondary">
-                    {dayjs(event.timestamp).format("YYYY-MM-DD HH:mm")} by{" "}
-                    {event.user}
-                  </Text>
-                </div>
-              ),
-              dot: <HistoryOutlined />,
-            }))}
-          />
-        )}
+        <Timeline>
+          {selectedJob?.history.map((event, index) => (
+            <Timeline.Item key={index}>
+              <Text>{dayjs(event.timestamp).format("YYYY-MM-DD HH:mm")}</Text>
+              <br />
+              <Text>{event.action}</Text>
+            </Timeline.Item>
+          ))}
+        </Timeline>
       </Modal>
     </div>
   );
