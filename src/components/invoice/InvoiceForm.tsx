@@ -13,9 +13,9 @@ import {
 import { DeleteOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import type { ColumnsType } from "antd/es/table";
-import ServiceSelect from "../ServiceSelect";
-import InvoiceTerms from "../InvoiceTerms";
-import InvoiceTotals from "../InvoiceTotals";
+import ServiceSelect from "./ServiceSelect";
+import InvoiceTerms from "./InvoiceTerms";
+import InvoiceTotals from "./InvoiceTotals";
 import {
   predefinedServices,
   jobTypes,

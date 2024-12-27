@@ -1,7 +1,7 @@
 import { Table, Input, InputNumber, Button, Typography, Space } from "antd";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import type { ServiceItem } from "../../types/job";
-import ServiceSelect from "../ServiceSelect";
+import ServiceSelect from "./ServiceSelect";
 import { predefinedServices } from "../../data/serviceData";
 
 const { Text } = Typography;
