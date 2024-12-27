@@ -13,28 +13,21 @@ import {
 import { DeleteOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import type { ColumnsType } from "antd/es/table";
-import ServiceSelect from "./ServiceSelect";
-import InvoiceTerms from "./InvoiceTerms";
-import InvoiceTotals from "./InvoiceTotals";
+import ServiceSelect from "../ServiceSelect";
+import InvoiceTerms from "../InvoiceTerms";
+import InvoiceTotals from "../InvoiceTotals";
 import {
   predefinedServices,
   jobTypes,
   branches,
   serviceAdvisers,
-} from "../data/serviceData";
+} from "../../data/serviceData";
+import type { InvoiceItem } from "../../types/invoice";
 
 const { Text } = Typography;
 
-interface ServiceItem {
+interface ServiceItem extends InvoiceItem {
   key: string;
-  service: string;
-  description: string;
-  qty: number;
-  unitPrice: number;
-  discount: number;
-  discountPercentage: number;
-  net: number;
-  amount: number;
 }
 
 const AddServiceButton = ({ onClick }: { onClick: () => void }) => (
@@ -60,14 +53,13 @@ export default function InvoiceForm() {
   const handleAddItem = () => {
     const newItem: ServiceItem = {
       key: Date.now().toString(),
+      id: Date.now().toString(),
       service: "",
       description: "",
-      qty: 1,
+      quantity: 1,
       unitPrice: 0,
       discount: 0,
-      discountPercentage: 0,
       net: 0,
-      amount: 0,
     };
     setItems([...items, newItem]);
   };
@@ -87,18 +79,15 @@ export default function InvoiceForm() {
           const updatedItem = { ...item, [field]: value };
 
           if (
-            field === "qty" ||
+            field === "quantity" ||
             field === "unitPrice" ||
-            field === "discountPercentage"
+            field === "discount"
           ) {
             updatedItem.net = calculateNet(
-              field === "qty" ? value : item.qty,
+              field === "quantity" ? value : item.quantity,
               field === "unitPrice" ? value : item.unitPrice,
-              field === "discountPercentage" ? value : item.discountPercentage
+              field === "discount" ? value : item.discount
             );
-            updatedItem.amount = updatedItem.net;
-            updatedItem.discount =
-              updatedItem.qty * updatedItem.unitPrice - updatedItem.net;
           }
 
           return updatedItem;
@@ -153,15 +142,15 @@ export default function InvoiceForm() {
       ),
     },
     {
-      title: "QTY",
-      dataIndex: "qty",
-      key: "qty",
+      title: "QTYYY",
+      dataIndex: "quantity",
+      key: "quantity",
       width: "10%",
       render: (_, record) => (
         <InputNumber
           min={1}
-          value={record.qty}
-          onChange={(value) => handleItemChange(record.key, "qty", value)}
+          value={record.quantity}
+          onChange={(value) => handleItemChange(record.key, "quantity", value)}
           style={{ width: "100%" }}
         />
       ),
@@ -183,17 +172,15 @@ export default function InvoiceForm() {
     },
     {
       title: "Discount %",
-      dataIndex: "discountPercentage",
-      key: "discountPercentage",
+      dataIndex: "discount",
+      key: "discount",
       width: "12%",
       render: (_, record) => (
         <InputNumber
           min={0}
           max={100}
-          value={record.discountPercentage}
-          onChange={(value) =>
-            handleItemChange(record.key, "discountPercentage", value)
-          }
+          value={record.discount}
+          onChange={(value) => handleItemChange(record.key, "discount", value)}
           style={{ width: "100%" }}
         />
       ),
@@ -222,10 +209,14 @@ export default function InvoiceForm() {
 
   const calculateTotals = () => {
     const subtotal = items.reduce(
-      (sum, item) => sum + item.qty * item.unitPrice,
+      (sum, item) => sum + item.quantity * item.unitPrice,
       0
     );
-    const discountTotal = items.reduce((sum, item) => sum + item.discount, 0);
+    const discountTotal = items.reduce(
+      (sum, item) =>
+        sum + (item.quantity * item.unitPrice * item.discount) / 100,
+      0
+    );
     const netTotal = subtotal - discountTotal;
     const taxAmount = netTotal * taxRate;
     return {

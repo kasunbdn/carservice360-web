@@ -7,16 +7,6 @@ export interface Customer {
   lastService: string;
 }
 
-export interface Invoice {
-  key: string;
-  id: string;
-  customer: string;
-  amount: number;
-  date: string;
-  status: string;
-  description: string;
-}
-
 export interface JobFormData {
   customer: string;
   vehicle: string;
