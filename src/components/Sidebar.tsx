@@ -28,6 +28,16 @@ const menuItems: MenuProps["items"] = [
         icon: <DashboardOutlined />,
         label: "Dashboard",
       },
+      {
+        key: "/AdminDashboard",
+        icon: <DashboardOutlined />,
+        label: "AdminDashboard",
+      },
+      {
+        key: "/UserDashboard",
+        icon: <DashboardOutlined />,
+        label: "UserDashboard",
+      },
     ],
   },
   {
