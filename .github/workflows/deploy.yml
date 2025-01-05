@@ -64,8 +64,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: $AWS_ROLE_TO_ASSUME
-          aws-region: $AWS_REGION  
+          role-to-assume: $${{ vars.AWS_ROLE_TO_ASSUME}}
+          aws-region: $${{ vars.AWS_REGION }} 
 
       # Step 3: Sync the dist folder to the S3 bucket
       - name: Deploy to S3
