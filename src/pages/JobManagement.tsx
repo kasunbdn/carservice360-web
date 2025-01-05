@@ -11,7 +11,6 @@ import {
   Row,
   Col,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import type { Job } from "../types/job";
 import JobStatusOverview from "../components/jobs/JobStatusOverview";
 import JobFilters from "../components/jobs/JobFilters";

@@ -5,6 +5,7 @@ const { Text, Title } = Typography;
 interface InvoiceTotalsProps {
   readonly subtotal: number;
   readonly discountTotal: number;
+  readonly inventoryTotal: number;
   readonly taxRate?: number;
   readonly taxAmount?: number;
   readonly grandTotal: number;
@@ -13,6 +14,7 @@ interface InvoiceTotalsProps {
 export default function InvoiceTotals({
   subtotal,
   discountTotal,
+  inventoryTotal,
   taxRate = 0,
   taxAmount = 0,
   grandTotal,
@@ -27,8 +29,18 @@ export default function InvoiceTotals({
             marginBottom: 8,
           }}
         >
-          <Text>Subtotal:</Text>
+          <Text>Services Subtotal:</Text>
           <Text>${subtotal.toFixed(2)}</Text>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 8,
+          }}
+        >
+          <Text>Inventory Total:</Text>
+          <Text>${inventoryTotal.toFixed(2)}</Text>
         </div>
         <div
           style={{

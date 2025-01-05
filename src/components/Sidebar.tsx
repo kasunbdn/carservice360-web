@@ -4,11 +4,7 @@ import {
   CarOutlined,
   UserOutlined,
   FileTextOutlined,
-  ToolOutlined,
-  ScheduleOutlined,
   SettingOutlined,
-  TeamOutlined,
-  TagOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,6 +23,16 @@ const menuItems: MenuProps["items"] = [
         key: "/",
         icon: <DashboardOutlined />,
         label: "Dashboard",
+      },
+      {
+        key: "/AdminDashboard",
+        icon: <DashboardOutlined />,
+        label: "AdminDashboard",
+      },
+      {
+        key: "/UserDashboard",
+        icon: <DashboardOutlined />,
+        label: "UserDashboard",
       },
     ],
   },

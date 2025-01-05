@@ -38,6 +38,14 @@ const initialJobs: Job[] = [
           unitPrice: 49.99,
           total: 49.99,
         },
+        {
+          id: "2",
+          name: "Brake Service",
+          description: "Front brake pad replacement",
+          quantity: 2,
+          unitPrice: 199.99,
+          total: 199.99,
+        },
       ],
       estimatedCost: 49.99,
     },
@@ -62,7 +70,7 @@ const initialJobs: Job[] = [
     customer: {
       name: "MIKO",
       phone: "(555) 234-5678",
-      email: "jane@example.com",
+      email: "example@gmail.com",
     },
     vehicle: {
       make: "Honda",

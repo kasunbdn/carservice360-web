@@ -1,6 +1,7 @@
-import { Typography, Descriptions, Table, Divider } from "antd";
+import { Typography, Descriptions, Table, Divider, Space, Tag } from "antd";
 import dayjs from "dayjs";
 import type { Invoice } from "../../types/invoice";
+//import type { SelectedInventoryItem } from "../../types/inventory";
 
 const { Title, Text } = Typography;
 
@@ -12,12 +13,8 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
   return (
     <div id="invoice-preview" className="invoice-preview">
       <div style={{ padding: "24px", background: "#fff" }}>
+        {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <img
-            src="https://i.pinimg.com/originals/43/03/9a/43039af5fec84a456e3f2d0e7640329b.gif"
-            alt="Company Logo"
-            style={{ height: 60, marginBottom: 16 }}
-          />
           <Title level={3}>carservice360 Car Service (Pvt) Ltd</Title>
           <Text>123 Service Road, Anuradhapura</Text>
           <br />
@@ -26,6 +23,7 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
 
         <Divider />
 
+        {/* Invoice Details */}
         <Descriptions title="Invoice Details" bordered column={2}>
           <Descriptions.Item label="Invoice No">{invoice.id}</Descriptions.Item>
           <Descriptions.Item label="Date">
@@ -34,76 +32,162 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
           <Descriptions.Item label="Customer">
             {invoice.customer.name}
           </Descriptions.Item>
-          <Descriptions.Item label="Status">{invoice.status}</Descriptions.Item>
+          <Descriptions.Item label="Status">
+            <Tag
+              color={
+                invoice.status === "paid"
+                  ? "success"
+                  : invoice.status === "pending"
+                  ? "warning"
+                  : "default"
+              }
+            >
+              {invoice.status.toUpperCase()}
+            </Tag>
+          </Descriptions.Item>
+          <Descriptions.Item label="Address" span={2}>
+            {invoice.customer.address}
+          </Descriptions.Item>
         </Descriptions>
 
-        <Table
-          style={{ marginTop: 24 }}
-          dataSource={invoice.items}
-          pagination={false}
-          columns={[
-            {
-              title: "Service",
-              dataIndex: "service",
-              key: "service",
-            },
-            {
-              title: "Description",
-              dataIndex: "description",
-              key: "description",
-            },
-            {
-              title: "Quantity",
-              dataIndex: "quantity",
-              key: "quantity",
-            },
-            {
-              title: "Unit Price",
-              dataIndex: "unitPrice",
-              key: "unitPrice",
-              render: (price: number) => `$${price.toFixed(2)}`,
-            },
-            {
-              title: "Net",
-              dataIndex: "net",
-              key: "net",
-              render: (net: number) => `$${net.toFixed(2)}`,
-            },
-          ]}
-          summary={() => (
-            <>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={4}>
-                  <strong>Subtotal</strong>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={1}>
-                  <strong>${invoice.totals.subtotal.toFixed(2)}</strong>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={4}>
-                  <strong>
-                    Tax ({(invoice.totals.taxRate * 100).toFixed(1)}%)
-                  </strong>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={1}>
-                  <strong>${invoice.totals.taxAmount.toFixed(2)}</strong>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={4}>
-                  <strong>Total Amount</strong>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={1}>
-                  <strong>${invoice.totals.grandTotal.toFixed(2)}</strong>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </>
-          )}
-        />
+        {/* Related Jobs */}
+        {invoice.relatedJobs && (
+          <div style={{ marginTop: 24 }}>
+            <Title level={5}>Related Jobs</Title>
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {invoice.relatedJobs.map((jobId) => (
+                <Text key={jobId} code>
+                  {jobId}
+                </Text>
+              ))}
+            </Space>
+          </div>
+        )}
+
+        {/* Services Table */}
+        <div style={{ marginTop: 24 }}>
+          <Title level={5}>Services</Title>
+          <Table
+            dataSource={invoice.items}
+            pagination={false}
+            columns={[
+              {
+                title: "Service",
+                dataIndex: "service",
+                key: "service",
+              },
+              {
+                title: "Description",
+                dataIndex: "description",
+                key: "description",
+              },
+              {
+                title: "Quantity",
+                dataIndex: "quantity",
+                key: "quantity",
+              },
+              {
+                title: "Unit Price",
+                dataIndex: "unitPrice",
+                key: "unitPrice",
+                render: (price: number) => `$${price.toFixed(2)}`,
+              },
+              {
+                title: "Discount",
+                dataIndex: "discount",
+                key: "discount",
+                render: (discount: number) => `${discount}%`,
+              },
+              {
+                title: "Net",
+                dataIndex: "net",
+                key: "net",
+                render: (net: number) => `$${net.toFixed(2)}`,
+              },
+            ]}
+          />
+        </div>
+
+        {/* Inventory Items Table */}
+        {invoice.inventoryItems && invoice.inventoryItems.length > 0 && (
+          <div style={{ marginTop: 24 }}>
+            <Title level={5}>Parts & Materials</Title>
+            <Table
+              dataSource={invoice.inventoryItems}
+              pagination={false}
+              columns={[
+                {
+                  title: "Item",
+                  dataIndex: ["inventoryItem", "name"],
+                  key: "name",
+                },
+                {
+                  title: "Part Number",
+                  dataIndex: ["inventoryItem", "partNumber"],
+                  key: "partNumber",
+                },
+                {
+                  title: "Quantity",
+                  dataIndex: "quantity",
+                  key: "quantity",
+                },
+                {
+                  title: "Unit Price",
+                  dataIndex: "unitPrice",
+                  key: "unitPrice",
+                  render: (price: number) => `$${price.toFixed(2)}`,
+                },
+                {
+                  title: "Total",
+                  dataIndex: "total",
+                  key: "total",
+                  render: (total: number) => `$${total.toFixed(2)}`,
+                },
+              ]}
+            />
+          </div>
+        )}
+
+        {/* Totals */}
+        <div
+          style={{ marginTop: 24, display: "flex", justifyContent: "flex-end" }}
+        >
+          <div style={{ width: 300 }}>
+            <Space direction="vertical" style={{ width: "100%" }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Text>Services Subtotal:</Text>
+                <Text>${invoice.totals.subtotal.toFixed(2)}</Text>
+              </div>
+              {invoice.totals.inventoryTotal > 0 && (
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Text>Parts & Materials:</Text>
+                  <Text>${invoice.totals.inventoryTotal.toFixed(2)}</Text>
+                </div>
+              )}
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Text>Discount Total:</Text>
+                <Text type="success">
+                  -${invoice.totals.discountTotal.toFixed(2)}
+                </Text>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Text>Tax ({(invoice.totals.taxRate * 100).toFixed(1)}%):</Text>
+                <Text>${invoice.totals.taxAmount.toFixed(2)}</Text>
+              </div>
+              <Divider style={{ margin: "12px 0" }} />
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Title level={4}>Grand Total:</Title>
+                <Title level={4}>${invoice.totals.grandTotal.toFixed(2)}</Title>
+              </div>
+            </Space>
+          </div>
+        </div>
 
         <Divider />
 
+        {/* Terms and Footer */}
         <div style={{ marginTop: 24 }}>
           <Title level={5}>Terms and Conditions</Title>
           <Text type="secondary">{invoice.terms}</Text>

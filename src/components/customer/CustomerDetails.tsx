@@ -1,4 +1,4 @@
-import { Card, Descriptions, Button, Space, Modal, message } from "antd";
+import { Card, Descriptions, Button, Modal, message } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import type { Customer } from "../../types/customer";

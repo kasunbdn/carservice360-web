@@ -7,6 +7,8 @@ import Jobs from "./pages/JobManagement";
 import Customers from "./pages/Customers";
 import Invoice from "./pages/Invoice";
 import Inventory from "./pages/Inventory";
+import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import "./App.css";
 
 const { Content } = Layout;
@@ -22,6 +24,8 @@ export default function App() {
             <div className="content-wrapper">
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/UserDashboard" element={<UserDashboard />} />
+                <Route path="/AdminDashboard" element={<AdminDashboard />} />
                 <Route path="/invoice" element={<Invoice />} />
                 <Route path="/jobmanagement" element={<Jobs />} />
                 <Route path="/Inventory" element={<Inventory />} />

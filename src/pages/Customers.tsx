@@ -1,16 +1,6 @@
 import { useState } from "react";
-import {
-  Typography,
-  Input,
-  Button,
-  Space,
-  Card,
-  Modal,
-  Row,
-  Col,
-  Tabs,
-} from "antd";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { Typography, Input, Button, Space, Card, Modal, Tabs } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import type { Customer } from "../types/customer";
 import { useCustomerStore } from "../stores/customerStore";
 import CustomerTable from "../components/customer/CustomerTable";

@@ -1,4 +1,5 @@
 import type { Invoice } from "../types/invoice";
+import type { InventoryItem, SelectedInventoryItem } from "../types/inventory";
 
 // mockCustomers
 export const mockCustomers = [
@@ -37,14 +38,64 @@ export const mockCustomers = [
   },
 ];
 
-// mockInvoices
+// Mock Inventory Items
+export const mockInventoryItems: InventoryItem[] = [
+  {
+    id: "INV-001",
+    partNumber: "OIL-5W30",
+    name: "Synthetic Oil 5W-30",
+    category: "oil",
+    quantity: 100,
+    minQuantity: 20,
+    price: 29.99,
+    supplier: "AutoParts Inc",
+    location: "A1",
+    onOrder: 0,
+    unit: "liters",
+    status: "in_stock",
+  },
+  {
+    id: "INV-002",
+    partNumber: "FIL-001",
+    name: "Oil Filter Premium",
+    category: "filters",
+    quantity: 50,
+    minQuantity: 10,
+    price: 12.99,
+    supplier: "Parts Plus",
+    location: "B2",
+    onOrder: 0,
+    unit: "pieces",
+    status: "in_stock",
+  },
+];
+
+// Mock Selected Inventory Items
+export const mockSelectedInventoryItems: SelectedInventoryItem[] = [
+  {
+    key: "1",
+    inventoryItem: mockInventoryItems[0],
+    quantity: 1,
+    unitPrice: 29.99,
+    total: 29.99,
+  },
+  {
+    key: "2",
+    inventoryItem: mockInventoryItems[1],
+    quantity: 1,
+    unitPrice: 12.99,
+    total: 12.99,
+  },
+];
+
+// Mock Invoices with Inventory Items
 export const mockInvoices: Invoice[] = [
   {
     id: "INV-2024-001",
     date: "2024-02-15",
-    serviceAdviser: "VMD S",
+    serviceAdviser: "serviceAdviser 1",
     customer: {
-      name: "VMD C",
+      name: "VMDC",
       address: "123 Main St",
     },
     vehicle: {
@@ -65,16 +116,155 @@ export const mockInvoices: Invoice[] = [
         net: 49.99,
       },
     ],
+    inventoryItems: mockSelectedInventoryItems,
     totals: {
       subtotal: 49.99,
       discountTotal: 0,
-      taxRate: 0.1,
-      taxAmount: 5.0,
-      grandTotal: 54.99,
+      inventoryTotal: 42.98,
+      taxRate: 10,
+      taxAmount: 9.3,
+      grandTotal: 102.27,
     },
     status: "paid",
     terms: "Standard terms and conditions apply",
     createdAt: "2024-02-15T10:00:00Z",
     updatedAt: "2024-02-15T10:00:00Z",
+    relatedJobs: ["JOB-001"],
+  },
+  {
+    id: "INV-2024-002",
+    date: "2024-03-01",
+    serviceAdviser: "serviceAdviser 2",
+    customer: {
+      name: "VMDC2",
+      address: "123 Main St",
+    },
+    vehicle: {
+      number: "DEF456",
+      model: "2021 Honda Civic",
+      odometer: 30000,
+    },
+    branch: "Main Branch",
+    jobType: "Repair",
+    items: [
+      {
+        id: "2",
+        service: "Brake Pad Replacement",
+        description: "Replacing front brake pads",
+        quantity: 1,
+        unitPrice: 150.0,
+        discount: 0,
+        net: 150.0,
+      },
+      {
+        id: "3",
+        service: "Tire Rotation",
+        description: "Rotating tires to ensure even wear",
+        quantity: 1,
+        unitPrice: 39.99,
+        discount: 0,
+        net: 39.99,
+      },
+      {
+        id: "4",
+        service: "Coolant Flush",
+        description: "Replacing old coolant and flushing the system",
+        quantity: 1,
+        unitPrice: 89.99,
+        discount: 0,
+        net: 89.99,
+      },
+    ],
+    inventoryItems: mockSelectedInventoryItems,
+    totals: {
+      subtotal: 279.98,
+      discountTotal: 0,
+      inventoryTotal: 42.98,
+      taxRate: 10,
+      taxAmount: 32.3,
+      grandTotal: 355.26,
+    },
+    status: "paid",
+    terms: "Standard terms and conditions apply",
+    createdAt: "2024-03-01T11:00:00Z",
+    updatedAt: "2024-03-01T11:00:00Z",
+    relatedJobs: ["JOB-002"],
+  },
+  {
+    id: "INV-2024-003",
+    date: "2024-03-10",
+    serviceAdviser: "serviceAdviser 1",
+    customer: {
+      name: "VMDC3",
+      address: "123 Main St",
+    },
+    vehicle: {
+      number: "XYZ789",
+      model: "2022 Ford F-150",
+      odometer: 15000,
+    },
+    branch: "Main Branch",
+    jobType: "Maintenance",
+    items: [
+      {
+        id: "5",
+        service: "Oil Change",
+        description: "Full synthetic oil change",
+        quantity: 1,
+        unitPrice: 55.0,
+        discount: 0,
+        net: 55.0,
+      },
+      {
+        id: "6",
+        service: "Air Filter Replacement",
+        description: "Replacing the engine air filter",
+        quantity: 1,
+        unitPrice: 30.0,
+        discount: 0,
+        net: 30.0,
+      },
+      {
+        id: "7",
+        service: "Transmission Fluid Change",
+        description: "Changing the transmission fluid",
+        quantity: 1,
+        unitPrice: 120.0,
+        discount: 0,
+        net: 120.0,
+      },
+      {
+        id: "8",
+        service: "Brake Fluid Flush",
+        description: "Flushing old brake fluid and replacing it",
+        quantity: 1,
+        unitPrice: 75.0,
+        discount: 0,
+        net: 75.0,
+      },
+      {
+        id: "9",
+        service: "Tire Balance",
+        description: "Balancing all four tires",
+        quantity: 1,
+        unitPrice: 25.0,
+        discount: 0,
+        net: 25.0,
+      },
+    ],
+    inventoryItems: mockSelectedInventoryItems,
+    totals: {
+      subtotal: 305.0,
+      discountTotal: 0,
+      inventoryTotal: 42.98,
+      taxRate: 10,
+      taxAmount: 34.8,
+      grandTotal: 382.78,
+    },
+    status: "paid",
+    terms: "Standard terms and conditions apply",
+    createdAt: "2024-03-10T12:00:00Z",
+    updatedAt: "2024-03-10T12:00:00Z",
+    relatedJobs: ["JOB-003"],
   },
 ];
