@@ -1,0 +1,75 @@
+name: Build React Application
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the 'main' branch
+  workflow_dispatch:  # Allow manual triggering
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+  
+jobs:
+  build:
+    name: Build React Application
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  
+          cache: 'yarn'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          yarn install 
+
+      # Step 4: Build the application
+      - name: Build React App
+        run: |
+          yarn dev-build
+
+      # Step 5: Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/** 
+
+  deploy:
+    name: Deploy to S3
+    runs-on: ubuntu-latest
+    environment: Test 
+    needs: build  # Ensure the build job completes successfully before deploying
+
+    steps:
+      # Step 1: Download build artifacts
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: ./dist/
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME}}
+          aws-region: ${{ vars.AWS_REGION }} 
+          
+      # Step 3: Sync the dist folder to the S3 bucket
+      - name: Deploy to S3
+        run: |
+          aws s3 sync dist/ s3://carservice360-test/ --delete --acl public-read
+          aws s3 cp dist/index.html s3://carservice360-test/index.html  --cache-control="max-age=0, no-cache, no-store, must-revalidate"  --acl public-read
