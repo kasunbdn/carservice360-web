@@ -59,6 +59,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
+          path: ./dist/
 
       # Step 2: Configure AWS credentials
       - name: Configure AWS Credentials
@@ -70,7 +71,7 @@ jobs:
       - name: Debug Directory Structure
         run: |
           ls -l
-          ls -l dist
+          ls -l ./dist 
 
       # Step 3: Sync the dist folder to the S3 bucket
       - name: Deploy to S3
