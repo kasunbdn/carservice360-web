@@ -1,3 +1,5 @@
+import type { SelectedInventoryItem } from "./inventory";
+
 export interface InvoiceItem {
   id: string;
   service: string;
@@ -29,6 +31,7 @@ export interface InvoiceDetails {
 export interface InvoiceTotals {
   subtotal: number;
   discountTotal: number;
+  inventoryTotal: number;
   taxRate: number;
   taxAmount: number;
   grandTotal: number;
@@ -36,7 +39,9 @@ export interface InvoiceTotals {
 
 export interface Invoice extends InvoiceDetails {
   items: InvoiceItem[];
+  inventoryItems: SelectedInventoryItem[];
   totals: InvoiceTotals;
+  relatedJobs: string[];
   status: "draft" | "pending" | "paid" | "void";
   terms: string;
   createdAt: string;

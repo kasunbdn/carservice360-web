@@ -70,7 +70,7 @@ const initialJobs: Job[] = [
     customer: {
       name: "MIKO",
       phone: "(555) 234-5678",
-      email: "jane@example.com",
+      email: "example@gmail.com",
     },
     vehicle: {
       make: "Honda",

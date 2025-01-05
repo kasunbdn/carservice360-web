@@ -5,9 +5,9 @@ import { useState } from "react";
 import { useJobStore } from "../../../stores/jobStore";
 import type { Job } from "../../../types/job";
 import dayjs from "dayjs";
-import { Typography, Card, Timeline, Descriptions, Row, Col } from "antd";
+import { Typography, Card, Descriptions, Row, Col } from "antd";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const { RangePicker } = DatePicker;
 

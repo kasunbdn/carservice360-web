@@ -10,9 +10,7 @@ export type ItemCategory =
   | "parts"
   | "chemicals"
   | "filters"
-  | "lubricants"
-  | "engine"
-  | "brakes";
+  | "lubricants";
 export type MeasurementUnit = "liters" | "gallons" | "pieces" | "units" | "kg";
 
 export interface InventoryItem {
@@ -31,4 +29,12 @@ export interface InventoryItem {
   lastUpdated?: string;
   notes?: string;
   status: StockStatus;
+}
+
+export interface SelectedInventoryItem {
+  key: string;
+  inventoryItem: InventoryItem;
+  quantity: number;
+  unitPrice: number;
+  total: number;
 }

@@ -4,11 +4,7 @@ import {
   CarOutlined,
   UserOutlined,
   FileTextOutlined,
-  ToolOutlined,
-  ScheduleOutlined,
   SettingOutlined,
-  TeamOutlined,
-  TagOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";

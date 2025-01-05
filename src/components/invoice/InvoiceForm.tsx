@@ -4,31 +4,37 @@ import {
   Input,
   Button,
   Select,
-  DatePicker,
   InputNumber,
   Typography,
-  Divider,
   Table,
+  Space,
 } from "antd";
 import { DeleteOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ColumnsType } from "antd/es/table";
 import ServiceSelect from "./ServiceSelect";
 import InvoiceTerms from "./InvoiceTerms";
 import InvoiceTotals from "./InvoiceTotals";
-import {
-  predefinedServices,
-  jobTypes,
-  branches,
-  serviceAdvisers,
-} from "../../data/serviceData";
-import type { InvoiceItem } from "../../types/invoice";
+import InventoryItemsTable from "./InventoryItemsTable";
+import { useJobStore } from "../../stores/jobStore";
+import { calculateInvoiceTotals } from "../../utils/invoice";
+import type { ServiceItem } from "../../types/service";
+//import type { Job } from "../../types/job";
+import type { SelectedInventoryItem } from "../../types/inventory";
+import { predefinedServices } from "../../data/serviceData";
 
 const { Text } = Typography;
+const { Option } = Select;
 
-interface ServiceItem extends InvoiceItem {
-  key: string;
-}
+// interface ServiceItem {
+//   key: string;
+//   service: string;
+//   description: string;
+//   quantity: number;
+//   unitPrice: number;
+//   discount: number;
+//   net: number;
+// }
 
 const AddServiceButton = ({ onClick }: { onClick: () => void }) => (
   <Button type="dashed" block icon={<PlusOutlined />} onClick={onClick}>
@@ -37,23 +43,38 @@ const AddServiceButton = ({ onClick }: { onClick: () => void }) => (
 );
 
 export default function InvoiceForm() {
+  const [form] = Form.useForm();
+  const { jobs } = useJobStore();
   const [items, setItems] = useState<ServiceItem[]>([]);
-  const [taxRate] = useState(0);
+  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
+  const [inventoryItems, setInventoryItems] = useState<SelectedInventoryItem[]>(
+    []
+  );
+  const [taxRate] = useState(0.1); // 10% tax rate
 
-  const calculateNet = (
-    qty: number,
-    unitPrice: number,
-    discountPercentage: number
-  ) => {
-    const total = qty * unitPrice;
-    const discount = total * (discountPercentage / 100);
-    return total - discount;
-  };
+  useEffect(() => {
+    if (selectedJobs.length > 0) {
+      const jobServices = selectedJobs.flatMap((jobId) => {
+        const job = jobs.find((j) => j.id === jobId);
+        return (
+          job?.service.items.map((item) => ({
+            key: `${jobId}-${item.id}`,
+            service: item.name,
+            description: item.description,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            discount: 0,
+            net: item.total,
+          })) || []
+        );
+      });
+      setItems(jobServices);
+    }
+  }, [selectedJobs, jobs]);
 
   const handleAddItem = () => {
     const newItem: ServiceItem = {
       key: Date.now().toString(),
-      id: Date.now().toString(),
       service: "",
       description: "",
       quantity: 1,
@@ -77,7 +98,6 @@ export default function InvoiceForm() {
       items.map((item) => {
         if (item.key === key) {
           const updatedItem = { ...item, [field]: value };
-
           if (
             field === "quantity" ||
             field === "unitPrice" ||
@@ -89,12 +109,21 @@ export default function InvoiceForm() {
               field === "discount" ? value : item.discount
             );
           }
-
           return updatedItem;
         }
         return item;
       })
     );
+  };
+
+  const calculateNet = (
+    quantity: number,
+    unitPrice: number,
+    discountPercentage: number
+  ) => {
+    const total = quantity * unitPrice;
+    const discount = total * (discountPercentage / 100);
+    return total - discount;
   };
 
   const handleServiceSelect = (key: string, serviceName: string) => {
@@ -111,6 +140,22 @@ export default function InvoiceForm() {
       handleItemChange(key, "service", serviceName);
     }
   };
+
+  const handleJobSelect = (selectedJobIds: string[]) => {
+    setSelectedJobs(selectedJobIds);
+  };
+
+  const handleSave = () => {
+    const totals = calculateInvoiceTotals(items, inventoryItems);
+    console.log("Saving invoice...", {
+      jobs: selectedJobs,
+      items,
+      inventoryItems,
+      totals,
+    });
+  };
+
+  const totals = calculateInvoiceTotals(items, inventoryItems);
 
   const columns: ColumnsType<ServiceItem> = [
     {
@@ -142,7 +187,7 @@ export default function InvoiceForm() {
       ),
     },
     {
-      title: "QTYYY",
+      title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
       width: "10%",
@@ -207,82 +252,25 @@ export default function InvoiceForm() {
     },
   ];
 
-  const calculateTotals = () => {
-    const subtotal = items.reduce(
-      (sum, item) => sum + item.quantity * item.unitPrice,
-      0
-    );
-    const discountTotal = items.reduce(
-      (sum, item) =>
-        sum + (item.quantity * item.unitPrice * item.discount) / 100,
-      0
-    );
-    const netTotal = subtotal - discountTotal;
-    const taxAmount = netTotal * taxRate;
-    return {
-      subtotal,
-      discountTotal,
-      netTotal,
-      taxAmount,
-      grandTotal: netTotal + taxAmount,
-    };
-  };
-
-  const handleSave = () => {
-    console.log("Saving invoice...");
-  };
-
-  const totals = calculateTotals();
-
   return (
     <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "24px",
-          marginBottom: 24,
-        }}
-      >
-        <Card title="Job Details" size="small">
-          <Form layout="vertical" style={{ maxWidth: "100%" }}>
-            <Form.Item label="Branch" required>
-              <Select options={branches} />
-            </Form.Item>
-            <Form.Item label="Vehicle No" required>
-              <Input />
-            </Form.Item>
-            <Form.Item label="Vehicle Model" required>
-              <Input />
-            </Form.Item>
-            <Form.Item label="Odometer">
-              <InputNumber style={{ width: "100%" }} />
-            </Form.Item>
-            <Form.Item label="Job Type" required>
-              <Select options={jobTypes} />
-            </Form.Item>
-          </Form>
-        </Card>
-
-        <Card title="Invoice Details" size="small">
-          <Form layout="vertical" style={{ maxWidth: "100%" }}>
-            <Form.Item label="Service Adviser" required>
-              <Select options={serviceAdvisers} />
-            </Form.Item>
-            <Form.Item label="Date/Time" required>
-              <DatePicker showTime style={{ width: "100%" }} />
-            </Form.Item>
-            <Form.Item label="Customer" required>
-              <Input />
-            </Form.Item>
-            <Form.Item label="NIC/BR">
-              <Input />
-            </Form.Item>
-            <Form.Item label="Address" required>
-              <Input.TextArea rows={2} />
-            </Form.Item>
-          </Form>
-        </Card>
+      <div style={{ marginBottom: 24 }}>
+        <Space style={{ width: "100%", justifyContent: "space-between" }}>
+          <Form.Item label="Select Jobs" style={{ marginBottom: 0, flex: 1 }}>
+            <Select
+              mode="multiple"
+              placeholder="Select related jobs"
+              onChange={handleJobSelect}
+              style={{ width: "auto", minWidth: 300 }}
+            >
+              {jobs.map((job) => (
+                <Option key={job.id} value={job.id}>
+                  {`${job.id} - ${job.customer.name} (${job.vehicle.make} ${job.vehicle.model})`}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Space>
       </div>
 
       <Card title="Services">
@@ -292,19 +280,27 @@ export default function InvoiceForm() {
           pagination={false}
           footer={() => <AddServiceButton onClick={handleAddItem} />}
         />
+      </Card>
 
+      <Card title="Inventory Items" style={{ marginTop: 24 }}>
+        <InventoryItemsTable
+          value={inventoryItems}
+          onChange={setInventoryItems}
+        />
+      </Card>
+
+      <Card style={{ marginTop: 24 }}>
         <InvoiceTotals
           subtotal={totals.subtotal}
           discountTotal={totals.discountTotal}
-          taxRate={taxRate}
+          inventoryTotal={totals.inventoryTotal}
+          taxRate={totals.taxRate}
           taxAmount={totals.taxAmount}
           grandTotal={totals.grandTotal}
         />
       </Card>
 
-      <Divider />
-
-      <Card size="small">
+      <Card size="small" style={{ marginTop: 24 }}>
         <InvoiceTerms />
       </Card>
 
