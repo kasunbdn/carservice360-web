@@ -70,7 +70,7 @@ jobs:
       - name: Debug Directory Structure
         run: |
           ls -l
-          ls -l /home/runner/work/carservice360-web/carservice360-web
+          ls -l dist
 
       # Step 3: Sync the dist folder to the S3 bucket
       - name: Deploy to S3
