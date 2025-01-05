@@ -68,11 +68,6 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME}}
           aws-region: ${{ vars.AWS_REGION }} 
           
-      - name: Debug Directory Structure
-        run: |
-          ls -l
-          ls -l ./dist 
-
       # Step 3: Sync the dist folder to the S3 bucket
       - name: Deploy to S3
         run: |
