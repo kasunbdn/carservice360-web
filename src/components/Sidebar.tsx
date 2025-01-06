@@ -82,11 +82,6 @@ const menuItems: MenuProps["items"] = [
         icon: <DatabaseOutlined />,
         label: "Inventory",
       },
-      {
-        key: "/settings",
-        icon: <SettingOutlined />,
-        label: "Settings",
-      },
     ],
   },
 ];

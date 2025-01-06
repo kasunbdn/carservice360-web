@@ -274,11 +274,13 @@ export default function JobManagement() {
               {selectedJob.service.items.map((item) => (
                 <div key={item.id} style={{ marginBottom: 16 }}>
                   <Text strong>{item.name}</Text>
+                  {/* <Text strong>{item.name || "Unnamed Service"}</Text> */}
                   <br />
                   <Text type="secondary">{item.description}</Text>
                   <br />
                   <Text>
-                    Quantity: {item.quantity} × ${item.unitPrice} = $
+                    {/* Quantity: {item.quantity} × ${item.unitPrice} = $ */}{" "}
+                    Quantity: {item.quantity} × ${item.unitPrice.toFixed(2)} = $
                     {item.total.toFixed(2)}
                   </Text>
                 </div>

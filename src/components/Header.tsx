@@ -1,17 +1,11 @@
-import { Layout, Switch, Space, Avatar, Dropdown } from "antd";
-import {
-  UserOutlined,
-  BellOutlined,
-  SunOutlined,
-  MoonOutlined,
-} from "@ant-design/icons";
-import useThemeStore from "../stores/themeStore";
+import { Layout, Space, Avatar, Dropdown } from "antd";
+// Switch, BellOutlined, SunOutlined, MoonOutlined,
+import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
 const { Header: AntHeader } = Layout;
 
 export default function Header() {
-  const { isDarkMode, toggleTheme } = useThemeStore();
   const userMenuItems: MenuProps["items"] = [
     { key: "profile", label: "Profile" },
     { key: "settings", label: "settings" },
@@ -29,13 +23,13 @@ export default function Header() {
       }}
     >
       <Space size={24}>
-        <Switch
+        {/* <Switch
           checkedChildren={<MoonOutlined />}
           unCheckedChildren={<SunOutlined />}
           checked={isDarkMode}
           onChange={toggleTheme}
         />
-        <BellOutlined />
+        <BellOutlined /> */}
         <Dropdown menu={{ items: userMenuItems }} trigger={["click"]}>
           <Avatar icon={<UserOutlined />} style={{ cursor: "pointer" }} />
         </Dropdown>

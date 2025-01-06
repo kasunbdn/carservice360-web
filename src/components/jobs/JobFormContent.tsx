@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Button,
-  InputNumber,
   Divider,
 } from "antd";
 import { useState, useEffect } from "react";

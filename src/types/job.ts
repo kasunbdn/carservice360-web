@@ -1,6 +1,6 @@
 export interface ServiceItem {
   id: string;
-  name: string;
+  name: any;
   description: string;
   quantity: number;
   unitPrice: number;

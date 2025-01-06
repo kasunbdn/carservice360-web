@@ -4,17 +4,16 @@ import { useNavigate } from "react-router-dom";
 import UserStats from "../components/dashboard/user/UserStats";
 import UserJobList from "../components/dashboard/user/UserJobList";
 import UserReminders from "../components/dashboard/user/UserReminders";
-import JobSubmissionForm from "../components/dashboard/user/JobSubmissionForm";
-import { useState } from "react";
+import { useJobStore } from "../stores/jobStore";
 
 const { Title, Text } = Typography;
 
 export default function UserDashboard() {
-  const [isJobFormVisible, setIsJobFormVisible] = useState(false);
+  const { jobs } = useJobStore();
+  const pendingJobTotal = jobs.filter((job) => job.status === "pending").length;
   const navigate = useNavigate();
   const mockUser = {
     name: "VMD",
-    pendingJobs: 3,
   };
 
   const handleButtonClick = () => {
@@ -26,9 +25,7 @@ export default function UserDashboard() {
         <div>
           <Title level={2}>Welcome, {mockUser.name}!</Title>
           <Text>
-            You have
-            {/* {mockUser.pendingJobs}  */} ~~ pending{" "}
-            {mockUser.pendingJobs === 1 ? "job" : "jobs"}
+            You have {pendingJobTotal} {pendingJobTotal === 1 ? "job" : "jobs"}
           </Text>
         </div>
 
@@ -44,13 +41,6 @@ export default function UserDashboard() {
             >
               Submit New Job
             </Button>
-            // <Button
-            //   type="primary"
-            //   icon={<PlusOutlined />}
-            //   onClick={() => setIsJobFormVisible(true)}
-            // >
-            //   Submit New Job
-            // </Button>
           }
         >
           <UserJobList />
@@ -61,15 +51,6 @@ export default function UserDashboard() {
             <UserReminders />
           </Col>
         </Row>
-
-        <JobSubmissionForm
-          visible={isJobFormVisible}
-          onCancel={() => setIsJobFormVisible(false)}
-          onSubmit={(values) => {
-            console.log("New job submission:", values);
-            setIsJobFormVisible(false);
-          }}
-        />
       </Space>
     </div>
   );

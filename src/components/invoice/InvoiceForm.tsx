@@ -26,16 +26,6 @@ import { predefinedServices } from "../../data/serviceData";
 const { Text } = Typography;
 const { Option } = Select;
 
-// interface ServiceItem {
-//   key: string;
-//   service: string;
-//   description: string;
-//   quantity: number;
-//   unitPrice: number;
-//   discount: number;
-//   net: number;
-// }
-
 const AddServiceButton = ({ onClick }: { onClick: () => void }) => (
   <Button type="dashed" block icon={<PlusOutlined />} onClick={onClick}>
     Add Service
@@ -43,14 +33,14 @@ const AddServiceButton = ({ onClick }: { onClick: () => void }) => (
 );
 
 export default function InvoiceForm() {
-  const [form] = Form.useForm();
+  //const [form] = Form.useForm();
   const { jobs } = useJobStore();
   const [items, setItems] = useState<ServiceItem[]>([]);
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [inventoryItems, setInventoryItems] = useState<SelectedInventoryItem[]>(
     []
   );
-  const [taxRate] = useState(0.1); // 10% tax rate
+  //const [taxRate] = useState(0.1); // 10% tax rate
 
   useEffect(() => {
     if (selectedJobs.length > 0) {
