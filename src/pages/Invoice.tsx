@@ -22,6 +22,8 @@ import InvoiceTable from "../components/invoice/InvoiceTable.tsx";
 import type { Invoice } from "../types/invoice";
 import { mockInvoices } from "../data/mockData.ts";
 import dayjs from "dayjs";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
 
 const { Panel } = Collapse;
 const { Title } = Typography;
@@ -37,12 +39,10 @@ export default function InvoicePage() {
     search: "",
   });
 
-  const handlePrint = async () => {
-    window.print();
-  };
+  const contentRef = useRef<HTMLDivElement>(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
 
   const handleDownload = async () => {
-    // Implement PDF download logic
     console.log("Downloading PDF...");
   };
 
@@ -130,21 +130,23 @@ export default function InvoicePage() {
             key="print"
             type="primary"
             icon={<PrinterOutlined />}
-            onClick={handlePrint}
+            onClick={() => reactToPrintFn()}
           >
-            Print
+            Print & Download PDF
           </Button>,
-          <Button
-            key="download"
-            type="primary"
-            icon={<DownloadOutlined />}
-            onClick={handleDownload}
-          >
-            Download PDF
-          </Button>,
+          // <Button
+          //   key="download"
+          //   type="primary"
+          //   icon={<DownloadOutlined />}
+          //   onClick={handleDownload}
+          // >
+          //   Download PDF
+          // </Button>,
         ]}
       >
-        {selectedInvoice && <InvoicePreview invoice={selectedInvoice} />}
+        <div ref={contentRef}>
+          {selectedInvoice && <InvoicePreview invoice={selectedInvoice} />}
+        </div>
       </Modal>
     </div>
   );

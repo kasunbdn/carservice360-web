@@ -51,7 +51,7 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
         </Descriptions>
 
         {/* Related Jobs */}
-        {invoice.relatedJobs && (
+        {/* {invoice.relatedJobs && (
           <div style={{ marginTop: 24 }}>
             <Title level={5}>Related Jobs</Title>
             <Space direction="vertical" style={{ width: "100%" }}>
@@ -62,7 +62,7 @@ export default function InvoicePreview({ invoice }: InvoicePreviewProps) {
               ))}
             </Space>
           </div>
-        )}
+        )} */}
 
         {/* Services Table */}
         <div style={{ marginTop: 24 }}>

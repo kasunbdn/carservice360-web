@@ -21,16 +21,6 @@ export default function JobTable({
   onStatusChange,
   onViewHistory,
 }: JobTableProps) {
-  const getStatusColor = (status: Job["status"]) => {
-    const colors = {
-      pending: "#faad14",
-      in_progress: "#1890ff",
-      completed: "#52c41a",
-      cancelled: "#ff4d4f",
-    };
-    return colors[status];
-  };
-
   const getPriorityColor = (priority: Job["priority"]) => {
     const colors = {
       low: "#52c41a",
@@ -73,7 +63,7 @@ export default function JobTable({
           </Text>
           {record.service.items.map((item) => (
             <Text key={item.id} type="secondary" style={{ fontSize: "12px" }}>
-              {item.name}
+              {item.name || "Unnamed Service"} - ${item.unitPrice}
             </Text>
           ))}
         </Space>

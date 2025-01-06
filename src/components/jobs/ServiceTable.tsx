@@ -54,17 +54,29 @@ export default function ServiceTable({
 
   const handleServiceSelect = (id: string, serviceName: string) => {
     const service = predefinedServices.find((s) => s.name === serviceName);
-    if (service) {
-      handleServiceChange(id, "name", serviceName);
-      handleServiceChange(
-        id,
-        "description",
-        `Standard ${serviceName.toLowerCase()} service`
-      );
-      handleServiceChange(id, "unitPrice", service.price);
-    } else {
-      handleServiceChange(id, "name", serviceName);
-    }
+    const updatedFields = service
+      ? {
+          name: serviceName,
+          description: `Standard ${serviceName.toLowerCase()} service`,
+          unitPrice: service.price,
+          total: service.price * 1,
+        }
+      : {
+          name: serviceName,
+        };
+
+    // Update all fields in one go
+    const newServices = value.map((serviceItem) => {
+      if (serviceItem.id === id) {
+        return {
+          ...serviceItem,
+          ...updatedFields,
+        };
+      }
+      return serviceItem;
+    });
+    console.log("Updated service:", updatedFields);
+    onChange?.(newServices);
   };
 
   const columns = [

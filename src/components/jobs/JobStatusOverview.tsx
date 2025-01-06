@@ -22,7 +22,7 @@ export default function JobStatusOverview({ jobs }: JobStatusOverviewProps) {
       color: "#1890ff",
     },
     {
-      title: "Pending Jobss",
+      title: "Pending Jobs",
       value: jobs.filter((job) => job.status === "pending").length,
       icon: <ClockCircleOutlined style={{ fontSize: 24, color: "#faad14" }} />,
       color: "#faad14",
@@ -50,7 +50,7 @@ export default function JobStatusOverview({ jobs }: JobStatusOverviewProps) {
   ];
 
   return (
-    <Row gutter={[16, 16]}>
+    <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
       {stats.map((stat, index) => (
         <Col xs={24} sm={12} md={6} key={index}>
           <Card hoverable>

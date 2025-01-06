@@ -26,7 +26,6 @@ import type {
   InventoryItem,
   ItemCategory,
   MeasurementUnit,
-  StockStatus,
 } from "../types/inventory";
 import {
   calculateStockStatus,
