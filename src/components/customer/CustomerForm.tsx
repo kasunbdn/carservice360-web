@@ -19,11 +19,20 @@ export default function CustomerForm({
 }: CustomerFormProps) {
   const [form] = Form.useForm();
 
+  const handleSubmit = (values: any) => {
+    onSubmit({
+      ...values,
+      totalSpent: 0,
+      vehicles: [],
+      history: [],
+    });
+  };
+
   return (
     <Form
       form={form}
       layout="vertical"
-      onFinish={onSubmit}
+      onFinish={handleSubmit}
       initialValues={initialValues}
     >
       <Form.Item
