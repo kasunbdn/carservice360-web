@@ -10,9 +10,9 @@ import {
   DatePicker,
   Select,
 } from "antd";
+//  DownloadOutlined,
 import {
   PrinterOutlined,
-  DownloadOutlined,
   SearchOutlined,
   FilterOutlined,
 } from "@ant-design/icons";
@@ -42,9 +42,9 @@ export default function InvoicePage() {
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
 
-  const handleDownload = async () => {
-    console.log("Downloading PDF...");
-  };
+  // const handleDownload = async () => {
+  //   console.log("Downloading PDF...");
+  // };
 
   const filterInvoices = (invoices: Invoice[]) => {
     return invoices.filter((invoice) => {
