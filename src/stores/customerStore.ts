@@ -32,9 +32,9 @@ interface CustomerStore {
 const mockCustomers: Customer[] = [
   {
     id: "1",
-    name: "John Doe",
+    name: "VMD",
     phone: "(555) 123-4567",
-    email: "john@example.com",
+    email: "example@gmail.com",
     address: "123 Main St, City, State 12345",
     vehicles: [
       {
@@ -77,14 +77,14 @@ const mockCustomers: Customer[] = [
     totalSpent: 1299.99,
     lastVisit: "2024-02-01",
     preferredContact: "email",
-    notes: "Prefers weekend appointments",
+    notes: "Prefers digital invoices",
   },
   {
     id: "2",
-    name: "Jane Smith",
+    name: "VMD2",
     phone: "(555) 234-5678",
-    email: "jane@example.com",
-    address: "456 Oak Ave, City, State 12345",
+    email: "example@gmail.com",
+    address: "123 Main St, City, State 12345",
     vehicles: [
       {
         id: "3",
@@ -110,7 +110,106 @@ const mockCustomers: Customer[] = [
     totalSpent: 799.99,
     lastVisit: "2024-01-20",
     preferredContact: "phone",
-    notes: "Allergic to air fresheners",
+    notes: "Prefers weekend appointments",
+  },
+  {
+    id: "3",
+    name: "VMD3",
+    phone: "(555) 345-6789",
+    email: "example3@gmail.com",
+    address: "123 Main St, City, State 12345",
+    vehicles: [
+      {
+        id: "4",
+        make: "Chevrolet",
+        model: "Tahoe",
+        year: "2022",
+        vin: "1GNEK13ZX3R123456",
+        licensePlate: "CHE-456",
+        lastService: "2024-01-25",
+      },
+    ],
+    history: [
+      {
+        id: "4",
+        date: "2024-01-25",
+        type: "service",
+        description: "Replaced brake pads and alignment check",
+        user: "System",
+      },
+    ],
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-25T00:00:00Z",
+    totalSpent: 999.99,
+    lastVisit: "2024-01-25",
+    preferredContact: "email",
+    notes: "Prefers weekend appointments",
+  },
+  {
+    id: "4",
+    name: "VMD4",
+    phone: "(555) 456-7890",
+    email: "example4@gmail.com",
+    address: "123 Main St, City, State 12345",
+    vehicles: [
+      {
+        id: "5",
+        make: "Nissan",
+        model: "Altima",
+        year: "2020",
+        vin: "1N4AL3AP7JC123456",
+        licensePlate: "ALT-123",
+        lastService: "2024-01-30",
+      },
+    ],
+    history: [
+      {
+        id: "5",
+        date: "2024-01-30",
+        type: "service",
+        description: "Battery replacement and diagnostics check",
+        user: "System",
+      },
+    ],
+    createdAt: "2024-01-20T00:00:00Z",
+    updatedAt: "2024-01-30T00:00:00Z",
+    totalSpent: 499.99,
+    lastVisit: "2024-01-30",
+    preferredContact: "phone",
+    notes: "Prefers weekend appointments",
+  },
+  {
+    id: "5",
+    name: "VMD5",
+    phone: "(555) 567-8901",
+    email: "example5@gmail.com",
+    address: "123 Main St, City, State 12345",
+    vehicles: [
+      {
+        id: "6",
+        make: "Tesla",
+        model: "Model 3",
+        year: "2023",
+        vin: "5YJ3E1EA5LF123456",
+        licensePlate: "TES-789",
+        lastService: "2024-02-05",
+      },
+    ],
+    history: [
+      {
+        id: "6",
+        date: "2024-02-05",
+        type: "service",
+        description: "Tire replacement and software update",
+        user: "System",
+      },
+    ],
+    createdAt: "2024-01-25T00:00:00Z",
+    updatedAt: "2024-02-05T00:00:00Z",
+    totalSpent: 1499.99,
+    lastVisit: "2024-02-05",
+    preferredContact: "email",
+    notes: "Prefers digital invoices",
   },
 ];
 

@@ -45,7 +45,8 @@ export default function JobManagement() {
 
   const handleCreateJob = (values: any) => {
     console.log("Creating new job:", values);
-    addJob(values);
+    const updatedValues = { ...values, status: "in_progress" };
+    addJob(updatedValues);
   };
 
   const handleEditJob = (job: Job) => {

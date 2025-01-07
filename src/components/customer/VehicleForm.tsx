@@ -1,22 +1,17 @@
-import { Form, Input, Select, Space, Button } from "antd";
-import { phoneRegex, emailRegex } from "../../utils/validation";
-import type { Customer } from "../../types/customer";
+import { Form, Input, Button, Space } from "antd";
+import type { CustomerVehicle } from "../../types/customer";
 
-const { TextArea } = Input;
-
-interface CustomerFormProps {
-  initialValues?: Partial<Customer>;
-  onSubmit: (values: any) => void;
+interface VehicleFormProps {
+  onSubmit: (values: Omit<CustomerVehicle, "id">) => void;
   onCancel: () => void;
-  loading?: boolean;
+  initialValues?: CustomerVehicle;
 }
 
-export default function CustomerForm({
-  initialValues,
+export default function VehicleForm({
   onSubmit,
   onCancel,
-  loading = false,
-}: CustomerFormProps) {
+  initialValues,
+}: VehicleFormProps) {
   const [form] = Form.useForm();
 
   return (
@@ -27,68 +22,58 @@ export default function CustomerForm({
       initialValues={initialValues}
     >
       <Form.Item
-        name="name"
-        label="Name"
+        name="make"
+        label="Make"
+        rules={[{ required: true, message: "Please enter vehicle make" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        name="model"
+        label="Model"
+        rules={[{ required: true, message: "Please enter vehicle model" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        name="year"
+        label="Year"
         rules={[
-          { required: true, message: "Please enter customer name" },
-          { min: 2, message: "Name must be at least 2 characters" },
+          { required: true, message: "Please enter vehicle year" },
+          { pattern: /^\d{4}$/, message: "Please enter a valid year" },
         ]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
-        name="phone"
-        label="Phone"
+        name="vin"
+        label="VIN"
         rules={[
-          { required: true, message: "Please enter phone number" },
-          { pattern: phoneRegex, message: "Please enter a valid phone number" },
-        ]}
-      >
-        <Input placeholder="(555) 123-4567" />
-      </Form.Item>
-
-      <Form.Item
-        name="email"
-        label="Email"
-        rules={[
-          { required: true, message: "Please enter email" },
-          { pattern: emailRegex, message: "Please enter a valid email" },
+          { required: true, message: "Please enter VIN" },
+          {
+            pattern: /^[A-HJ-NPR-Z0-9]{17}$/,
+            message: "Please enter a valid VIN",
+          },
         ]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
-        name="address"
-        label="Address"
-        rules={[{ required: true, message: "Please enter address" }]}
+        name="licensePlate"
+        label="License Plate"
+        rules={[{ required: true, message: "Please enter license plate" }]}
       >
-        <TextArea rows={3} />
-      </Form.Item>
-
-      <Form.Item
-        name="preferredContact"
-        label="Preferred Contact Method"
-        rules={[
-          { required: true, message: "Please select preferred contact method" },
-        ]}
-      >
-        <Select>
-          <Select.Option value="email">Email</Select.Option>
-          <Select.Option value="phone">Phone</Select.Option>
-          <Select.Option value="sms">SMS</Select.Option>
-        </Select>
-      </Form.Item>
-
-      <Form.Item name="notes" label="Notes">
-        <TextArea rows={4} />
+        <Input />
       </Form.Item>
 
       <Form.Item>
         <Space>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            {initialValues ? "Update Customer" : "Create Customer"}
+          <Button type="primary" htmlType="submit">
+            {initialValues ? "Update Vehicle" : "Add Vehicle"}
           </Button>
           <Button onClick={onCancel}>Cancel</Button>
         </Space>
