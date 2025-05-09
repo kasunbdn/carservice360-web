@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.3",
-    "@ant-design/icons": "^5.5.1",
+    "@ant-design/icons": "^6.0.0",
     "@auth0/auth0-react": "^2.2.4",
-    "@react-pdf/renderer": "^4.0.0",
+    "@react-pdf/renderer": "^4.2.2",
     "antd": "^5.22.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
