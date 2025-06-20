@@ -4,91 +4,93 @@ import {
   CarOutlined,
   UserOutlined,
   FileTextOutlined,
-  SettingOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import type { MenuProps } from "antd";
 
 const { Sider } = Layout;
 const { Title } = Typography;
-
-const menuItems: MenuProps["items"] = [
-  {
-    key: "dashboard",
-    type: "group",
-    label: "MAIN",
-    children: [
-      {
-        key: "/",
-        icon: <DashboardOutlined />,
-        label: "Dashboard",
-      },
-      {
-        key: "/AdminDashboard",
-        icon: <DashboardOutlined />,
-        label: "AdminDashboard",
-      },
-      {
-        key: "/UserDashboard",
-        icon: <DashboardOutlined />,
-        label: "UserDashboard",
-      },
-    ],
-  },
-  {
-    key: "operations",
-    type: "group",
-    label: "OPERATIONS",
-    children: [
-      {
-        key: "/jobmanagement",
-        icon: <CarOutlined />,
-        label: "Job Management",
-      },
-    ],
-  },
-  {
-    key: "finance",
-    type: "group",
-    label: "FINANCE",
-    children: [
-      {
-        key: "/invoice",
-        icon: <FileTextOutlined />,
-        label: "Invoices",
-      },
-    ],
-  },
-  {
-    key: "contacts",
-    type: "group",
-    label: "CONTACTS",
-    children: [
-      {
-        key: "/customers",
-        icon: <UserOutlined />,
-        label: "Customers",
-      },
-    ],
-  },
-  {
-    key: "system",
-    type: "group",
-    label: "SYSTEM",
-    children: [
-      {
-        key: "/inventory",
-        icon: <DatabaseOutlined />,
-        label: "Inventory",
-      },
-    ],
-  },
-];
-
+const currentDomain = window.location.origin;
 function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAuthenticated, user } = useAuth0();
+
+  const isAdmin = user?.[`${currentDomain}/roles`]?.includes("admin") || false;
+
+  console.log("Sidebar user info:", { isAuthenticated, user, isAdmin });
+
+  const getMenuItems = (isAdmin: boolean): MenuProps["items"] =>
+    [
+      {
+        key: "dashboard",
+        type: "group" as const,
+        label: "MAIN",
+        children: [
+          // { key: "/", icon: <DashboardOutlined />, label: "Dashboard" },
+          {
+            key: "/UserDashboard",
+            icon: <DashboardOutlined />,
+            label: "UserDashboard",
+          },
+          isAdmin
+            ? {
+                key: "/AdminDashboard",
+                icon: <DashboardOutlined />,
+                label: "AdminDashboard",
+              }
+            : null,
+        ].filter(Boolean) as MenuProps["items"],
+      },
+      {
+        key: "operations",
+        type: "group" as const,
+        label: "OPERATIONS",
+        children: [
+          {
+            key: "/jobmanagement",
+            icon: <CarOutlined />,
+            label: "Job Management",
+          },
+        ],
+      },
+      {
+        key: "finance",
+        type: "group" as const,
+        label: "FINANCE",
+        children: [
+          { key: "/invoice", icon: <FileTextOutlined />, label: "Invoices" },
+        ],
+      },
+      isAdmin
+        ? {
+            key: "contacts",
+            type: "group" as const,
+            label: "CONTACTS",
+            children: [
+              { key: "/customers", icon: <UserOutlined />, label: "Customers" },
+            ],
+          }
+        : null,
+      isAdmin
+        ? {
+            key: "system",
+            type: "group" as const,
+            label: "SYSTEM",
+            children: [
+              {
+                key: "/inventory",
+                icon: <DatabaseOutlined />,
+                label: "Inventory",
+              },
+            ],
+          }
+        : null,
+    ].filter(Boolean) as MenuProps["items"];
+
+  const menuItems = getMenuItems(isAdmin);
 
   return (
     <Sider
